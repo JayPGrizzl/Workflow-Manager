@@ -23,8 +23,9 @@
       }
       
       function callinit() {
+      console.log("Auth Initilized");
         gapi.auth.init(checkAuth);
-        console.log("Auth Initilized");
+
       }
       
       /**
