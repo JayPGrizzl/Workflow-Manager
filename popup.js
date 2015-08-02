@@ -9,6 +9,7 @@
       var SCOPES = ['https://www.googleapis.com/auth/drive'];
       
 
+      
        function handleClientLoad() {
           //gapi.client.setApiKey(APIKEY);
           window.setTimeout(callinit,1);
@@ -40,6 +41,7 @@
       function handleAuthResult(authResult) {
         var authorizeDiv = document.getElementById('authorize-div');
         console.log("Preparing to Handle OAuth 2.0 Result");
+        
         if (authResult && !authResult.error) {
           // Hide auth UI, then load client library.
           console.log("Authentication Succeeded");
@@ -48,9 +50,19 @@
         } else {
           // Show auth UI, allowing the user to initiate authorization by
           // clicking authorize button.
+          switchPageLoader(false);
           authorizeDiv.style.display = 'inline';
           loadDOMListners();
           console.log("Authentication Failed");
+        }
+      }
+
+      function switchPageLoader(switchr) {
+        var bble = document.getElementById('pageloading');
+        if (switchr === false) {
+        bble.style.display = 'none';
+        } else {
+          bble.style.span.display = 'inline';
         }
       }
 
@@ -58,8 +70,9 @@
         console.log("Auth Button Enabled");
         document.getElementById('authorize-button').onmousedown = function() {
           handleAuthClick(event);
-        console.log("Auth Button Clicked");
+          console.log("Auth Button Clicked");
         };
+        
        }
        
 
@@ -118,5 +131,6 @@
       function appendPre(message) {
         var pre = document.getElementById('output');
         var textContent = document.createTextNode(message + '\n');
+        switchPageLoader(false);
         pre.appendChild(textContent);
       }
