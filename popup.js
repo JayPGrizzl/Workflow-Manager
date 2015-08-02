@@ -109,22 +109,23 @@
        */
       function listFiles() {
         console.log("Activating Drive Files List");
-        var request = gapi.client.drive.files.list({
-            'maxResults': 10
+        var request = gapi.client.drive.children.list({
+            'folderId': "0B8c_I3daa9Dxc1VicVhXUm5BcEk",
+            'maxResults': 100
           });
 
           request.execute(function(resp) {
 
-            var files = resp.items;
-            if (files && files.length > 0) {
+            var folders = resp.items;
+            if (folders && folders.length > 0) {
               var dl = document.getElementById('projectDL');
               var slctor = document.createElement("SELECT");
               var lblhead = document.createTextNode("Select Existing Project:");
               dl.appendChild(lblhead);
               dl.appendChild(slctor);
-              for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                appendPre(file.title + ' (' + file.id + ')',slctor);
+              for (var i = 0; i < folders.length; i++) {
+                var folder = folders[i];
+                appendPre(folder.name + ' (' + folder.id + ')',slctor);
               }
             } else {
               appendPre('No files found.');
