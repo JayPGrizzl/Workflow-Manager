@@ -30,6 +30,10 @@ table {
     border-spacing: 2px;
     border-color: gray;
 }
+select {
+  width:auto;
+  height:20px;
+}
 .bubblingG {
 	text-align: center;
 	width:78px;

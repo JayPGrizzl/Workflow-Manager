@@ -8,7 +8,12 @@
 
       var SCOPES = ['https://www.googleapis.com/auth/drive'];
       
-
+      window.onload = function(e){
+        console.log("Loading Workflow structure JSON");
+        $.getJSON(chrome.extension.getURL('workflowstructure.json'), function(settings) {
+          //..
+        });
+        };
       
        function handleClientLoad() {
           //gapi.client.setApiKey(APIKEY);
@@ -109,12 +114,17 @@
           });
 
           request.execute(function(resp) {
-            appendPre('Files:');
+
             var files = resp.items;
             if (files && files.length > 0) {
+              var dl = document.getElementById('projectDL');
+              var slctor = document.createElement("SELECT");
+              var lblhead = document.createTextNode("Select Existing Project:");
+              dl.appendChild(lblhead);
+              dl.appendChild(slctor);
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-                appendPre(file.title + ' (' + file.id + ')');
+                appendPre(file.title + ' (' + file.id + ')',slctor);
               }
             } else {
               appendPre('No files found.');
@@ -128,9 +138,15 @@
        *
        * @param {string} message Text to be placed in pre element.
        */
-      function appendPre(message) {
-        var pre = document.getElementById('output');
-        var textContent = document.createTextNode(message + '\n');
+      function appendPre(message,slctr) {
+        console.log("Adding element: " + message);
+        var optn = document.createElement("OPTION");
         switchPageLoader(false);
-        pre.appendChild(textContent);
+        var msg = document.createTextNode(message);
+        optn.appendChild(msg);
+        slctr.appendChild(optn);
+
+      }
+      
+      function loadWorkFlow() {
       }
