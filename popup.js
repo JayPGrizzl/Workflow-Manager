@@ -125,13 +125,34 @@
               dl.appendChild(slctor);
               for (var i = 0; i < folders.length; i++) {
                 var folder = folders[i];
-                appendPre(folder.name + ' (' + folder.id + ')',slctor);
+                var request = gapi.client.drive.files.get({
+          'fileId' : folder.id
+        });
+                var foldername = getFolderNames(request);
+                appendPre(foldername + ' (' + folder.id + ')',slctor);
               }
             } else {
               appendPre('No files found.');
             }
           });
       }
+
+
+      function getFolderNames(request) {
+        request.execute(function x(resp) {
+          return resp;
+        });
+      return x.title;
+      }
+        
+
+
+
+function printToOutdiv (result){document.getElementById("outdiv").innerHTML=result;}
+
+function GetFilesButton (){
+    gapi.client.load('drive', 'v2', function() {retrieveAllFilesInFolder('root',printToOutdiv);} );
+}  
 
       /**
        * Append a pre element to the body containing the given message
