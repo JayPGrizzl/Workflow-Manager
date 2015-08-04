@@ -1,22 +1,20 @@
- 
-      // Your Client ID can be retrieved from your project in the Google
+// Your Client ID can be retrieved from your project in the Google
       // Developer Console, https://console.developers.google.com
       var CLIENT_ID = "1096340861657-c0596rq0b2d1erfc99bo272m2p76gd1k.apps.googleusercontent.com";
       var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
-      
+      var API_KEY = "AIzaSyA3yJ67-xkarYLSZjApx31RcvQjQydibeY";
       // Your Client ID can be retrieved from your project in the Google
       // Developer Console, https://console.developers.google.com
 
       var SCOPES = ['https://www.googleapis.com/auth/drive'];
       
-       function loadDOMListners() { 
-        console.log("Auth Button Enabled");
-        document.getElementById('authorize-button').onmousedown = function() {
-        handleAuthClick(event);
-        console.log("Auth Button Clicked");
+      window.onload = function(e){
+        console.log("Loading Workflow structure JSON");
+        $.getJSON(chrome.extension.getURL('workflowstructure.json'), function(settings) {
+          //..
+        });
         };
-       }
-       
+      
        function handleClientLoad() {
           //gapi.client.setApiKey(APIKEY);
           window.setTimeout(callinit,1);
@@ -48,6 +46,7 @@
       function handleAuthResult(authResult) {
         var authorizeDiv = document.getElementById('authorize-div');
         console.log("Preparing to Handle OAuth 2.0 Result");
+        
         if (authResult && !authResult.error) {
           // Hide auth UI, then load client library.
           console.log("Authentication Succeeded");
@@ -56,11 +55,31 @@
         } else {
           // Show auth UI, allowing the user to initiate authorization by
           // clicking authorize button.
+          switchPageLoader(false);
           authorizeDiv.style.display = 'inline';
           loadDOMListners();
           console.log("Authentication Failed");
         }
       }
+
+      function switchPageLoader(switchr) {
+        var bble = document.getElementById('pageloading');
+        if (switchr === false) {
+        bble.style.display = 'none';
+        } else {
+          bble.style.span.display = 'inline';
+        }
+      }
+
+      function loadDOMListners() { 
+        console.log("Auth Button Enabled");
+        document.getElementById('authorize-button').onmousedown = function() {
+          handleAuthClick(event);
+          console.log("Auth Button Clicked");
+        };
+        
+       }
+       
 
       /**
        * Initiate auth flow in response to user clicking authorize button.
@@ -90,17 +109,27 @@
        */
       function listFiles() {
         console.log("Activating Drive Files List");
-        var request = gapi.client.drive.files.list({
-            'maxResults': 10
+        var request = gapi.client.drive.children.list({
+            'folderId': "0B8c_I3daa9Dxc1VicVhXUm5BcEk",
+            'maxResults': 100
           });
 
           request.execute(function(resp) {
-            appendPre('Files:');
-            var files = resp.items;
-            if (files && files.length > 0) {
-              for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                appendPre(file.title + ' (' + file.id + ')');
+
+            var folders = resp.items;
+            if (folders && folders.length > 0) {
+              var dl = document.getElementById('projectDL');
+              var slctor = document.createElement("SELECT");
+              var lblhead = document.createTextNode("Select Existing Project:");
+              dl.appendChild(lblhead);
+              dl.appendChild(slctor);
+              for (var i = 0; i < folders.length; i++) {
+                var folder = folders[i];
+                var request = gapi.client.drive.files.get({
+          'fileId' : folder.id
+        });
+                var foldername = getFolderNames(request);
+                appendPre(foldername + ' (' + folder.id + ')',slctor);
               }
             } else {
               appendPre('No files found.');
@@ -108,16 +137,38 @@
           });
       }
 
+
+      function getFolderNames(request) {
+        request.execute(function x(resp) {
+          return resp;
+        });
+      return x.title;
+      }
+        
+
+
+
+function printToOutdiv (result){document.getElementById("outdiv").innerHTML=result;}
+
+function GetFilesButton (){
+    gapi.client.load('drive', 'v2', function() {retrieveAllFilesInFolder('root',printToOutdiv);} );
+}  
+
       /**
        * Append a pre element to the body containing the given message
        * as its text node.
        *
        * @param {string} message Text to be placed in pre element.
        */
-      function appendPre(message) {
-        var pre = document.getElementById('output');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
+      function appendPre(message,slctr) {
+        console.log("Adding element: " + message);
+        var optn = document.createElement("OPTION");
+        switchPageLoader(false);
+        var msg = document.createTextNode(message);
+        optn.appendChild(msg);
+        slctr.appendChild(optn);
+
       }
-
-
+      
+      function loadWorkFlow() {
+      }

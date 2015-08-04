@@ -1,0 +1,18 @@
+{
+  "Workflow": {
+    "Engineering_Detail": {
+      "Start_Project": [
+        { "Name": "Project Start",
+          "Shape": "Oval",
+          "Link": "https://www.kickstarter.com/learn",
+          "Helpfile":"https://docs.google.com/document/d/1WrDiFqiNlg_lnXpezY05F2vQJlMNGK4CSXIHwunnEu0/edit?usp=sharing"
+        }],
+      "New_Project": [ 
+        { "Name": "Administer New Project",
+          "Shape": "Square",
+          "Link": "https://www.kickstarter.com/learn?ref=nav"
+        }]
+    }
+    }  
+  
+}
