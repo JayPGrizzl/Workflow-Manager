@@ -1,6 +1,6 @@
 // Your Client ID can be retrieved from your project in the Google
       // Developer Console, https://console.developers.google.com
-      var CLIENT_ID = "1096340861657-c0596rq0b2d1erfc99bo272m2p76gd1k.apps.googleusercontent.com";
+      var CLIENT_ID = "339314299297-hrp24tsbvi4e7l6iafphgrd1j6c1gqj3.apps.googleusercontent.com";
       var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
       var API_KEY = "AIzaSyA3yJ67-xkarYLSZjApx31RcvQjQydibeY";
       // Your Client ID can be retrieved from your project in the Google
@@ -128,8 +128,8 @@
                 var request = gapi.client.drive.files.get({
           'fileId' : folder.id
         });
-                var foldername = getFolderNames(request);
-                appendPre(foldername + ' (' + folder.id + ')',slctor);
+                var foldername = getFolderNames(request,folders.length,i,folder.id,slctor);
+                
               }
             } else {
               appendPre('No files found.');
@@ -137,22 +137,20 @@
           });
       }
 
-
-      function getFolderNames(request) {
-        request.execute(function x(resp) {
-          return resp;
+      function getFolderNames(request,len,i,folderid,slctor) {
+        var output;
+        request.execute(function(resp) {
+          output = resp;
+          var name = [len];
+          name[i] = runafterexecute(output);
+          console.log(name[i]);
+          appendPre(name[i] + ' (' + folderid + ')',slctor);
         });
-      return x.title;
+      function runafterexecute(opt) {
+        return opt.title;
       }
-        
-
-
-
-function printToOutdiv (result){document.getElementById("outdiv").innerHTML=result;}
-
-function GetFilesButton (){
-    gapi.client.load('drive', 'v2', function() {retrieveAllFilesInFolder('root',printToOutdiv);} );
-}  
+       return name;
+      }
 
       /**
        * Append a pre element to the body containing the given message
