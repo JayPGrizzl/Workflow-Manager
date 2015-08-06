@@ -110,8 +110,14 @@
        * Load Drive API client library.
        */
       function loadDriveApi() {
+        var elementExists = !!document.getElementById('ProjectSelection');
+        console.log(elementExists);
+        if (elementExists === true) {
+          console.log("Already Exists");
+        } else {
         console.log("Loading Drive API");
         gapi.client.load('drive', 'v2', listFiles);
+        }
       }
 
       /**
@@ -130,7 +136,7 @@
               var dl = document.getElementById('projectDL');
               var slctor = document.createElement("SELECT");
               slctor.className = "styled-select";
-              slctor.setAttribute = (id,"ProjectSelection");
+              slctor.id = 'ProjectSelection';
               var lblhead = document.createTextNode("Select Existing Project:");
               dl.appendChild(lblhead);
               dl.appendChild(slctor);
@@ -146,7 +152,6 @@
             }
           });
           switchPageLoader(false);
-          slctor.display.style = 'inline';
       }
 
       function getFolderNames(request,len,i,folderid,slctor) {
@@ -155,7 +160,7 @@
           output = resp;
           var name = [len];
           name[i] = runafterexecute(output);
-          console.log(name[i]);
+          //console.log(name[i]);
           appendPre(name[i] + ' (' + folderid + ')',slctor);
         });
       function runafterexecute(opt) {
@@ -171,7 +176,7 @@
        * @param {string} message Text to be placed in pre element.
        */
       function appendPre(message,slctr) {
-        console.log("Adding element: " + message);
+        //console.log("Adding element: " + message);
         var optn = document.createElement("OPTION");
         var msg = document.createTextNode(message);
         optn.appendChild(msg);
