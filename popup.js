@@ -10,9 +10,12 @@
       
       window.onload = function(e){
         console.log("Loading Workflow structure JSON");
-        $.getJSON(chrome.extension.getURL('workflowstructure.json'), function(settings) {
+         $.getJSON(chrome.extension.getURL('workflowstructure.json'), function(settings) {
           //..
+          console.log("Loaded JSON");
+          console.log(settings);
         });
+
         };
       
        function handleClientLoad() {
@@ -51,7 +54,7 @@
           // Hide auth UI, then load client library.
           console.log("Authentication Succeeded");
           authorizeDiv.style.display = 'none';
-          loadDriveApi();
+          loadMenuItems();
         } else {
           // Show auth UI, allowing the user to initiate authorization by
           // clicking authorize button.
@@ -67,7 +70,7 @@
         if (switchr === false) {
         bble.style.display = 'none';
         } else {
-          bble.style.span.display = 'inline';
+          bble.style.display = 'inline';
         }
       }
 
@@ -80,7 +83,14 @@
         
        }
        
-
+      function loadMenuItems() {
+        var btnAdd = document.getElementById('btnADDProj');
+        btnAdd.style.display = 'inline';
+        btnAdd.onmousedown = function() {
+          switchPageLoader(true);
+          loadDriveApi();
+        };
+      }
       /**
        * Initiate auth flow in response to user clicking authorize button.
        *
@@ -110,8 +120,7 @@
       function listFiles() {
         console.log("Activating Drive Files List");
         var request = gapi.client.drive.children.list({
-            'folderId': "0B8c_I3daa9Dxc1VicVhXUm5BcEk",
-            'maxResults': 100
+            'folderId': "0B8c_I3daa9Dxc1VicVhXUm5BcEk"
           });
 
           request.execute(function(resp) {
@@ -120,6 +129,8 @@
             if (folders && folders.length > 0) {
               var dl = document.getElementById('projectDL');
               var slctor = document.createElement("SELECT");
+              slctor.className = "styled-select";
+              slctor.setAttribute = (id,"ProjectSelection");
               var lblhead = document.createTextNode("Select Existing Project:");
               dl.appendChild(lblhead);
               dl.appendChild(slctor);
@@ -129,12 +140,13 @@
           'fileId' : folder.id
         });
                 var foldername = getFolderNames(request,folders.length,i,folder.id,slctor);
-                
               }
             } else {
               appendPre('No files found.');
             }
           });
+          switchPageLoader(false);
+          slctor.display.style = 'inline';
       }
 
       function getFolderNames(request,len,i,folderid,slctor) {
@@ -161,11 +173,9 @@
       function appendPre(message,slctr) {
         console.log("Adding element: " + message);
         var optn = document.createElement("OPTION");
-        switchPageLoader(false);
         var msg = document.createTextNode(message);
         optn.appendChild(msg);
         slctr.appendChild(optn);
-
       }
       
       function loadWorkFlow() {

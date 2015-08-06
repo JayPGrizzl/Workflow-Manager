@@ -30,10 +30,24 @@ table {
     border-spacing: 2px;
     border-color: gray;
 }
-select {
-  width:auto;
-  height:20px;
-}
+.styled-select select {
+   background: transparent;
+   width: 268px;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+   }
+.styled-select {
+   width: auto;
+   height: 34px;
+   overflow: hidden;
+   background: url("down_arrow_select.jpg") no-repeat right #ddd;
+   border: 1px solid #ccc;
+   }
 .bubblingG {
 	text-align: center;
 	width:78px;
@@ -162,4 +176,30 @@ select {
 		background-color:rgba(83,203,224,0.77);
 		-moz-transform: translateY(-20px);
 	}
+}
+
+.btnADD {
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  -webkit-box-shadow: 1px 1px 3px #969496;
+  -moz-box-shadow: 1px 1px 3px #969496;
+  box-shadow: 1px 1px 3px #969496;
+  font-family: Georgia;
+  color: #5c5c5c;
+  font-size: 20px;
+  background: #ffffff;
+  padding: 5px 7px 6px 7px;
+  border: solid #c9c9c9 1px;
+  text-decoration: none;
+}
+
+.btnADD:hover {
+  background: #ffc278;
+  background-image: -webkit-linear-gradient(top, #ffc278, #ff9a42);
+  background-image: -moz-linear-gradient(top, #ffc278, #ff9a42);
+  background-image: -ms-linear-gradient(top, #ffc278, #ff9a42);
+  background-image: -o-linear-gradient(top, #ffc278, #ff9a42);
+  background-image: linear-gradient(to bottom, #ffc278, #ff9a42);
+  text-decoration: none;
 }
