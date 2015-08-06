@@ -3,6 +3,7 @@
       var CLIENT_ID = "339314299297-hrp24tsbvi4e7l6iafphgrd1j6c1gqj3.apps.googleusercontent.com";
       var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
       var API_KEY = "AIzaSyA3yJ67-xkarYLSZjApx31RcvQjQydibeY";
+      var $WORKFLOW;
       // Your Client ID can be retrieved from your project in the Google
       // Developer Console, https://console.developers.google.com
 
@@ -14,6 +15,7 @@
           //..
           console.log("Loaded JSON");
           console.log(settings);
+          $WORKFLOW = settings;
         });
 
         };
@@ -87,9 +89,15 @@
         var btnAdd = document.getElementById('btnADDProj');
         btnAdd.style.display = 'inline';
         btnAdd.onmousedown = function() {
+        var elementExists = !!document.getElementById('ProjectSelection');
+        if (elementExists === true) {
+          console.log("Already Exists");
+        } else {
           switchPageLoader(true);
           loadDriveApi();
-        };
+          loadWorkFlow();
+        }
+      };
       }
       /**
        * Initiate auth flow in response to user clicking authorize button.
@@ -110,14 +118,9 @@
        * Load Drive API client library.
        */
       function loadDriveApi() {
-        var elementExists = !!document.getElementById('ProjectSelection');
-        console.log(elementExists);
-        if (elementExists === true) {
-          console.log("Already Exists");
-        } else {
+
         console.log("Loading Drive API");
         gapi.client.load('drive', 'v2', listFiles);
-        }
       }
 
       /**
@@ -184,4 +187,11 @@
       }
       
       function loadWorkFlow() {
-      }
+        var dv1 = document.getElementById("Workflow");
+        var wf1 = document.createElement("BUTTON");
+        wf1.id = "wf1";
+        wf1.className= $WORKFLOW.Workflow.Engineering_Detail.New_Project[0].Shape;
+        var t = document.createTextNode($WORKFLOW.Workflow.Engineering_Detail.New_Project[0].Name); 
+        wf1.appendChild(t);
+        dv1.appendChild(wf1);
+        }
